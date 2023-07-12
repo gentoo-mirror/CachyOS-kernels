@@ -20,7 +20,8 @@ DEPEND="sys-libs/libcap-ng
 RDEPEND="${DEPEND}"
 
 PATCHES=(
-	"${FILESDIR}/newuksmdstats.patch"
+	"${FILESDIR}/0001-uksmdstats-fixes.patch"
+	"${FILESDIR}/0002-translate.patch"
 )
 
 CONFIG_CHECK="~KSM"
