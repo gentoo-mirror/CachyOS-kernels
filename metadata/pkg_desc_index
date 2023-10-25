@@ -1,5 +1,5 @@
 app-admin/ananicy-cpp 1.0.2 1.1.0 1.1.1: Ananicy rewritten in C++ for much lower CPU and memory usage (powered by CachyOS rules)
 dev-cpp/std-format 0_pre20230529-r1: A simple polyfill allowing you to use std::format
-sys-kernel/cachyos-sources 6.3.9-r1 6.4.1 6.4.2 6.4.3 6.4.4 6.4.5 6.5.7 6.5.8: CachyOS provides enhanced kernels that offer improved performance and other benefits.
+sys-kernel/cachyos-sources 6.3.9-r1 6.4.1 6.4.2 6.4.3 6.4.4 6.4.5 6.5.7 6.5.8 6.5.9: CachyOS provides enhanced kernels that offer improved performance and other benefits.
 sys-process/uksmd 1.2.0 1.2.7: Userspace KSM helper daemon
 virtual/linux-sources 3-r99: Virtual for Linux kernel sources
