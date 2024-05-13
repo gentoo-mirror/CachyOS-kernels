@@ -52,46 +52,39 @@ _set_hztick_rate() {
 	fi
 }
 
-_eapply() {
-	local _patch=$1
-	# no die, due https://github.com/CachyOS/kernel-patches/commit/19dd3a1f0aaa0deb61964e9d88a361804e3c6a24 have bugs
-	einfo "Applying ${_patch} (-p1) ..."
-	patch -p1 -N -i "${_patch}" -d "$S"
-}
-
 src_prepare() {
 	files_dir="${FILESDIR}/${PV}"
-	_eapply "${files_dir}/all/0001-cachyos-base-all.patch"
+	eapply "${files_dir}/all/0001-cachyos-base-all.patch"
 
 	if use bore-sched-ext; then
-		_eapply "${files_dir}/sched/0001-sched-ext.patch"
-		_eapply "${files_dir}/sched/0001-bore-cachy-ext.patch"
+		eapply "${files_dir}/sched/0001-sched-ext.patch"
+		eapply "${files_dir}/sched/0001-bore-cachy-ext.patch"
 		cp "${files_dir}/config-bore-sched-ext" .config || die
 	fi
 
 	if use bore; then
-		_eapply "${files_dir}/sched/0001-bore-cachy.patch"
+		eapply "${files_dir}/sched/0001-bore-cachy.patch"
 		cp "${files_dir}/config-bore" .config || die
 	fi
 
 	if use "echo"; then
-		_eapply "${files_dir}/sched/0001-echo-cachy.patch"
+		eapply "${files_dir}/sched/0001-echo-cachy.patch"
 		cp "${files_dir}/config-echo" .config || die
 	fi
 
 	if use rt-bore; then
-		_eapply "${files_dir}/misc/0001-rt.patch"
-		_eapply "${files_dir}/sched/0001-bore-cachy-rt.patch"
+		eapply "${files_dir}/misc/0001-rt.patch"
+		eapply "${files_dir}/sched/0001-bore-cachy-rt.patch"
 		cp "${files_dir}/config-rt-bore" .config || die
 	fi
 
 	if use sched-ext; then
-		_eapply "${files_dir}/sched/0001-sched-ext.patch"
+		eapply "${files_dir}/sched/0001-sched-ext.patch"
 		cp "${files_dir}/config-sched-ext" .config || die
 	fi
 
 	if use hardened; then
-		_eapply "${files_dir}/misc/0001-hardened.patch"
+		eapply "${files_dir}/misc/0001-hardened.patch"
 		cp "${files_dir}/config-hardened" .config || die
 	fi
 
