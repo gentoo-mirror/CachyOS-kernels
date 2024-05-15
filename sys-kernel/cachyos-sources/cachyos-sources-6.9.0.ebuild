@@ -4,9 +4,8 @@
 EAPI="8"
 ETYPE="sources"
 EXTRAVERSION="-cachyos"
-K_WANT_GENPATCHES="base extras"
-# due genpatch is not ready for 6.9
-#K_GENPATCHES_VER="0"
+K_WANT_GENPATCHES="base extras experimental"
+K_GENPATCHES_VER="1"
 
 # make sure kernel-2 know right version without guess
 K_BASE_VER="$PV"
@@ -26,6 +25,7 @@ SRC_URI="
 LICENSE="GPL-3"
 KEYWORDS="~amd64"
 IUSE="
+	experimental
 	+bore-sched-ext bore echo rt-bore eevdf sched-ext
 	deckify hardened +auto-cpu-optimization kcfi
 	hz_ticks_100 hz_ticks_250 hz_ticks_300 hz_ticks_500 hz_ticks_600 hz_ticks_625 hz_ticks_750 +hz_ticks_1000
