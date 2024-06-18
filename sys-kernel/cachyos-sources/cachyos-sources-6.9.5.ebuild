@@ -238,7 +238,8 @@ src_prepare() {
 	march_list=(mnative_amd mnative_intel mk7 mk8sse3 mk10 mbarcelona mbobcat mjaguar mbulldozer mpiledriver msteamroller mexcavator mzen mzen2 mzen3 mzen4 mmpsc matom mcore2 mnehalem mwestmere msilvermont msandybridge mivybridge mhaswell mbroadwell mskylake mskylakex mcannonlake micelake mgoldmont mgoldmontplus mcascadelake mcooperlake mtigerlake msapphirerapids mrocketlake malderlake)
 	for MARCH in "${march_list[@]}"; do
 		if use "${MARCH}"; then
-			scripts/config -k -e CONFIG_"${MARCH}"
+			MARCH_UPPER=$(echo "$MARCH" | tr '[:lower:]' '[:upper:]')
+			scripts/config -k -e CONFIG_"${MARCH_UPPER}"
 			scripts/config -k -d CONFIG_GENERIC_CPU
 			break
 		fi
