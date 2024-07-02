@@ -1,6 +1,6 @@
 app-admin/ananicy-cpp 1.0.2 1.1.0 1.1.1: Ananicy rewritten in C++ for much lower CPU and memory usage (powered by CachyOS rules)
 dev-cpp/std-format 0_pre20230529-r1: A simple polyfill allowing you to use std::format
 sys-kernel/cachyos-settings 20231102 20240114: Configuration files that tweak sysctl values, add udev rules to automatically set schedulers, and provide additional optimizations.
-sys-kernel/cachyos-sources 6.6.8 6.7.0 6.7.2 6.7.3 6.7.6 6.7.9 6.8.8 6.8.9_rc4 6.9.0_rc2 6.9.1_rc3 6.9.2 6.9.3_rc3 6.9.3 6.9.4 6.9.5 6.9.6 6.9.6.2 6.9.7: Linux SCHED-EXT + BORE + Cachy Sauce Kernel by CachyOS with other patches and improvements
+sys-kernel/cachyos-sources 6.6.8 6.7.0 6.7.2 6.7.3 6.7.6 6.7.9 6.8.8 6.8.9_rc4 6.9.0_rc2 6.9.1_rc3 6.9.2 6.9.3_rc3 6.9.3 6.9.4 6.9.5 6.9.6 6.9.6.2 6.9.7 6.9.7.2: Linux SCHED-EXT + BORE + Cachy Sauce Kernel by CachyOS with other patches and improvements
 sys-process/uksmd 1.2.0 1.2.7 1.2.8: Userspace KSM helper daemon
 virtual/linux-sources 3-r99: Virtual for Linux kernel sources
