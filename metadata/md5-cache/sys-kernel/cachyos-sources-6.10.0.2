@@ -1,0 +1,15 @@
+DEFINED_PHASES=compile install postinst postrm preinst prepare setup test unpack
+DESCRIPTION=Linux SCHED-EXT + BORE + Cachy Sauce Kernel by CachyOS with other patches and improvements
+EAPI=8
+HOMEPAGE=https://github.com/CachyOS/linux-cachyos
+INHERIT=kernel-2 optfeature
+IUSE=experimental +bore-sched-ext bore echo rt-bore eevdf sched-ext deckify hardened +auto-cpu-optimization kcfi llvm-lto-thin llvm-lto-full hz_ticks_100 hz_ticks_250 hz_ticks_300 hz_ticks_500 hz_ticks_600 hz_ticks_625 hz_ticks_750 +hz_ticks_1000 +per-gov tickrate_perodic tickrate_idle +tickrate_full preempt_full preempt_voluntary preempt_server +o3 os +bbr3 +hugepage_always hugepage_madvise damon mnative_amd mnative_intel mk8 mk8sse3 mk10 mbarcelona mbobcat mjaguar mbulldozer mpiledriver msteamroller mexcavator mzen mzen2 mzen3 mzen4 mmpsc matom mcore2 mnehalem mwestmere msilvermont msandybridge mivybridge mhaswell mbroadwell mskylake mskylakex mcannonlake micelake mgoldmont mgoldmontplus mcascadelake mcooperlake mtigerlake msapphirerapids mrocketlake malderlake symlink build
+KEYWORDS=~amd64
+LICENSE=GPL-3
+RDEPEND=!build? ( app-alternatives/cpio dev-lang/perl app-alternatives/bc dev-build/make sys-devel/bison sys-devel/flex >=sys-libs/ncurses-5.2 virtual/libelf virtual/pkgconfig )
+REQUIRED_USE=^^ ( bore-sched-ext bore echo rt-bore eevdf sched-ext ) ?? ( llvm-lto-thin llvm-lto-full ) ^^ ( hz_ticks_100 hz_ticks_250 hz_ticks_300 hz_ticks_500 hz_ticks_600 hz_ticks_625 hz_ticks_750 hz_ticks_1000 ) ^^ ( tickrate_perodic tickrate_idle tickrate_full ) rt-bore? ( ^^ ( preempt_full preempt_voluntary preempt_server ) ) ?? ( o3 os ) ^^ ( hugepage_always hugepage_madvise ) ?? ( mnative_amd mnative_intel mk8 mk8sse3 mk10 mbarcelona mbobcat mjaguar mbulldozer mpiledriver msteamroller mexcavator mzen mzen2 mzen3 mzen4 mmpsc matom mcore2 mnehalem mwestmere msilvermont msandybridge mivybridge mhaswell mbroadwell mskylake mskylakex mcannonlake micelake mgoldmont mgoldmontplus mcascadelake mcooperlake mtigerlake msapphirerapids mrocketlake malderlake )
+RESTRICT=binchecks strip
+SLOT=6.10.0.2
+SRC_URI=https://www.kernel.org/pub/linux/kernel/v6.x/linux-6.10.tar.xz https://dev.gentoo.org/~alicef/dist/genpatches/genpatches-6.10-1.base.tar.xz https://dev.gentoo.org/~mpagano/dist/genpatches/genpatches-6.10-1.base.tar.xz https://dev.gentoo.org/~alicef/dist/genpatches/genpatches-6.10-1.extras.tar.xz https://dev.gentoo.org/~mpagano/dist/genpatches/genpatches-6.10-1.extras.tar.xz experimental? ( https://dev.gentoo.org/~alicef/dist/genpatches/genpatches-6.10-1.experimental.tar.xz https://dev.gentoo.org/~mpagano/dist/genpatches/genpatches-6.10-1.experimental.tar.xz )
+_eclasses_=toolchain-funcs	e56c7649b804f051623c8bc1a1c44084	multilib	c19072c3cd7ac5cb21de013f7e9832e0	crossdev	f04338ff78f213a4a55c5c37b3c6563e	estack	c61c368a76fdf3a82fdf8dbaebea3804	multiprocessing	30ead54fa2e2b5f9cd4e612ffc34d0fe	optfeature	222cb475c5a4f7ae7cfb0bf510a6fe54	kernel-2	0e01377cce73a7a06321d0ef97388d31
+_md5_=0d3030bc39b3d93ce05f2ab570ae4606
