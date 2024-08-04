@@ -6,7 +6,7 @@ ETYPE="sources"
 EXTRAVERSION="-cachyos" # Not used in kernel-2, just due to most ebuilds have it
 K_USEPV="1"
 K_WANT_GENPATCHES="base extras experimental"
-K_GENPATCHES_VER="4"
+K_GENPATCHES_VER="6"
 
 # make sure kernel-2 know right version without guess
 CKV="$(ver_cut 1-3)"
