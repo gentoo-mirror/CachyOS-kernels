@@ -29,7 +29,7 @@ IUSE="
 	experimental
 	+bore-sched-ext bore bmq rt rt-bore eevdf sched-ext
 	deckify hardened +auto-cpu-optimization kcfi
-	llvm-lto-thin llvm-lto-full
+	+llvm-lto-thin llvm-lto-full
 	hz_ticks_100 hz_ticks_250 hz_ticks_300 hz_ticks_500 hz_ticks_600 hz_ticks_625 hz_ticks_750 +hz_ticks_1000
 	+per-gov tickrate_perodic tickrate_idle +tickrate_full preempt_full preempt_voluntary preempt_server
 	+o3 os debug +bbr3
