@@ -149,6 +149,7 @@ src_prepare() {
 	if use kcfi; then
 		scripts/config -e ARCH_SUPPORTS_CFI_CLANG -e CFI_CLANG -e CFI_AUTO_DEFAULT || die
 	else
+		# https://github.com/openzfs/zfs/issues/15911
 		scripts/config -d CFI_CLANG || die
 	fi
 
