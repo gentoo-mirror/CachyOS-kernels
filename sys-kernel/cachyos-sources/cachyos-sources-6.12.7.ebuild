@@ -51,7 +51,7 @@ REQUIRED_USE="
 	^^ ( hugepage_always hugepage_madvise )
 	?? ( auto-cpu-optimization mgeneric mgeneric_v1 mgeneric_v2 mgeneric_v3 mgeneric_v4 mnative_amd mnative_intel mk8 mk8sse3 mk10 mbarcelona mbobcat mjaguar mbulldozer mpiledriver msteamroller mexcavator mzen mzen2 mzen3 mzen4 mmpsc matom mcore2 mnehalem mwestmere msilvermont msandybridge mivybridge mhaswell mbroadwell mskylake mskylakex mcannonlake micelake mgoldmont mgoldmontplus mcascadelake mcooperlake mtigerlake msapphirerapids mrocketlake malderlake )
 "
-DEPEND="autofdo? ( dev-util/perf[libpfm] )"
+RDEPEND="autofdo? ( dev-util/perf[libpfm] )"
 SRC_URI="
 	${KERNEL_URI}
 	${GENPATCHES_URI}
