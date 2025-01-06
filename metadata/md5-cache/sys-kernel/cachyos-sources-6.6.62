@@ -12,4 +12,4 @@ RESTRICT=binchecks strip
 SLOT=6.6.62
 SRC_URI=https://www.kernel.org/pub/linux/kernel/v6.x/linux-6.6.tar.xz https://dev.gentoo.org/~alicef/dist/genpatches/genpatches-6.6-70.base.tar.xz https://dev.gentoo.org/~mpagano/dist/genpatches/genpatches-6.6-70.base.tar.xz https://dev.gentoo.org/~alicef/dist/genpatches/genpatches-6.6-70.extras.tar.xz https://dev.gentoo.org/~mpagano/dist/genpatches/genpatches-6.6-70.extras.tar.xz experimental? ( https://dev.gentoo.org/~alicef/dist/genpatches/genpatches-6.6-70.experimental.tar.xz https://dev.gentoo.org/~mpagano/dist/genpatches/genpatches-6.6-70.experimental.tar.xz ) zfs? ( https://github.com/cachyos/zfs/archive/baa50314567afd986a00838f0fa65fdacbd12daf.tar.gz -> zfs-baa50314567afd986a00838f0fa65fdacbd12daf.tar.gz )
 _eclasses_=toolchain-funcs	14648d8795f7779e11e1bc7cf08b7536	multilib	b2a329026f2e404e9e371097dda47f96	crossdev	f04338ff78f213a4a55c5c37b3c6563e	estack	c61c368a76fdf3a82fdf8dbaebea3804	multiprocessing	1e32df7deee68372153dca65f4a7c21f	optfeature	222cb475c5a4f7ae7cfb0bf510a6fe54	kernel-2	0e01377cce73a7a06321d0ef97388d31
-_md5_=2aec9a30956d64647e08c348cbeb639a
+_md5_=a3ac472c292f20b0f4d3b4e3f2cf7f61
