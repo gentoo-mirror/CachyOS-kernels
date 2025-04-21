@@ -5,7 +5,7 @@ EAPI="8"
 ETYPE="sources"
 EXTRAVERSION="-cachyos" # Not used in kernel-2, just due to most ebuilds have it
 K_WANT_GENPATCHES="base extras experimental"
-K_GENPATCHES_VER="27"
+K_GENPATCHES_VER="28"
 ZFS_COMMIT="76fbaaa192f499a42c3c821f7346710c2d321af3"
 
 # make sure kernel-2 know right version without guess
