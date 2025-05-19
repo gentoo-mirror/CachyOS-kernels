@@ -5,8 +5,8 @@ EAPI="8"
 ETYPE="sources"
 EXTRAVERSION="-cachyos" # Not used in kernel-2, just due to most ebuilds have it
 # If RC version, enable below 2 lines
-#K_USEPV="1"
-#K_PREPATCHED="1"
+K_USEPV="1"
+K_PREPATCHED="1"
 K_WANT_GENPATCHES="base extras experimental"
 K_GENPATCHES_VER="8"
 ZFS_COMMIT="92f430b00f42964b63aee373fbf6598a20f6c0cc"
@@ -77,7 +77,7 @@ src_unpack() {
 }
 
 src_prepare() {
-	files_dir="${FILESDIR}/${PV}"
+	files_dir="${FILESDIR}/${PVR}"
 
 	eapply "${files_dir}/all/0001-cachyos-base-all.patch"
 
@@ -294,7 +294,7 @@ src_prepare() {
 	scripts/config --set-str DEFAULT_HOSTNAME "gentoo" || die
 
 	### Set LOCALVERSION
-	#scripts/config --set-str LOCALVERSION "${PV}" || die
+	#scripts/config --set-str LOCALVERSION "${PVR}" || die
 }
 
 pkg_postinst() {

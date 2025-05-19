@@ -26442,7 +26442,7 @@ index 472540aeabc2..6c2986d2ad11 100644
  	}
  }
  
--#define BUFSIZE 256
+-#define BUFSIZE 4096
 +#define BUFSIZE (256 + KSYM_NAME_LEN)
  
  int main(int argc, char **argv)
