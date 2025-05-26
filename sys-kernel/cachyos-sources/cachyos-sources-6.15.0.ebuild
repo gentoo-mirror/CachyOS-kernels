@@ -9,7 +9,7 @@ EXTRAVERSION="-cachyos" # Not used in kernel-2, just due to most ebuilds have it
 #K_PREPATCHED="1"
 K_WANT_GENPATCHES="base extras"
 K_GENPATCHES_VER="1"
-ZFS_COMMIT="92f430b00f42964b63aee373fbf6598a20f6c0cc"
+ZFS_COMMIT="782aa343af935fa23b16ea849c63cc023aac3363"
 
 # make sure kernel-2 know right version without guess
 CKV="$(ver_cut 1-3)"
