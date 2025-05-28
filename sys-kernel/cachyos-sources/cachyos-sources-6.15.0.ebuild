@@ -42,7 +42,7 @@ REQUIRED_USE="
 	^^ ( zfs kcfi )
 	^^ ( bore bmq rt rt-bore eevdf )
 	propeller? ( !llvm-lto-full )
-	?? ( llvm-lto-thin llvm-lto-full )
+	?? ( llvm-lto-thin llvm-lto-full llvm-lto-thin-dist )
 	^^ ( hz_ticks_100 hz_ticks_250 hz_ticks_300 hz_ticks_500 hz_ticks_600 hz_ticks_750 hz_ticks_1000 )
 	^^ ( tickrate_perodic tickrate_idle tickrate_full )
 	rt? ( ^^ ( preempt_full preempt_lazy preempt_voluntary ) )
