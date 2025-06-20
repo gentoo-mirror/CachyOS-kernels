@@ -7,9 +7,9 @@ IUSE=experimental +bore bmq rt rt-bore eevdf deckify hardened kcfi +autofdo +pro
 KEYWORDS=~amd64
 LICENSE=GPL-3
 RDEPEND=autofdo? ( dev-util/perf[libpfm] ) !build? ( app-alternatives/cpio dev-lang/perl app-alternatives/bc dev-build/make sys-devel/bison sys-devel/flex >=sys-libs/ncurses-5.2 virtual/libelf virtual/pkgconfig )
-REQUIRED_USE=^^ ( zfs kcfi ) ^^ ( bore bmq rt rt-bore eevdf ) propeller? ( !llvm-lto-full ) ?? ( llvm-lto-thin llvm-lto-full llvm-lto-thin-dist ) ^^ ( hz_ticks_100 hz_ticks_250 hz_ticks_300 hz_ticks_500 hz_ticks_600 hz_ticks_750 hz_ticks_1000 ) ^^ ( tickrate_perodic tickrate_idle tickrate_full ) rt? ( ^^ ( preempt_full preempt_lazy preempt_voluntary ) ) rt-bore? ( ^^ ( preempt_full preempt_lazy preempt_voluntary ) ) ?? ( o3 os debug ) ^^ ( hugepage_always hugepage_madvise ) ?? ( mgeneric mgeneric_v1 mgeneric_v2 mgeneric_v3 mgeneric_v4 mnative mzen4 )
+REQUIRED_USE=^^ ( bore bmq rt rt-bore eevdf ) propeller? ( !llvm-lto-full ) ?? ( llvm-lto-thin llvm-lto-full llvm-lto-thin-dist ) ^^ ( hz_ticks_100 hz_ticks_250 hz_ticks_300 hz_ticks_500 hz_ticks_600 hz_ticks_750 hz_ticks_1000 ) ^^ ( tickrate_perodic tickrate_idle tickrate_full ) rt? ( ^^ ( preempt_full preempt_lazy preempt_voluntary ) ) rt-bore? ( ^^ ( preempt_full preempt_lazy preempt_voluntary ) ) ?? ( o3 os debug ) ^^ ( hugepage_always hugepage_madvise ) ?? ( mgeneric mgeneric_v1 mgeneric_v2 mgeneric_v3 mgeneric_v4 mnative mzen4 )
 RESTRICT=binchecks strip
 SLOT=6.15.3
 SRC_URI=https://www.kernel.org/pub/linux/kernel/v6.x/linux-6.15.tar.xz https://dev.gentoo.org/~alicef/dist/genpatches/genpatches-6.15-4.base.tar.xz https://dev.gentoo.org/~mpagano/dist/genpatches/genpatches-6.15-4.base.tar.xz https://dev.gentoo.org/~alicef/dist/genpatches/genpatches-6.15-4.extras.tar.xz https://dev.gentoo.org/~mpagano/dist/genpatches/genpatches-6.15-4.extras.tar.xz zfs? ( https://github.com/cachyos/zfs/archive/725d591cf34aca2a4b1f19f2a733def2c8c8dc41.tar.gz -> zfs-725d591cf34aca2a4b1f19f2a733def2c8c8dc41.tar.gz )
 _eclasses_=toolchain-funcs	f9d71a6efe9d083aec750dd13968e169	crossdev	f04338ff78f213a4a55c5c37b3c6563e	estack	c61c368a76fdf3a82fdf8dbaebea3804	multiprocessing	1e32df7deee68372153dca65f4a7c21f	optfeature	538bce96e5589935b57e178e8635f301	kernel-2	0e01377cce73a7a06321d0ef97388d31
-_md5_=aadf4a4297a9c6e66fe78639d53ea5ba
+_md5_=444d62ff74b5bb68354f44572f5213f4
