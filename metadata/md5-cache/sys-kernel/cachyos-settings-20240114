@@ -12,5 +12,5 @@ RDEPEND=virtual/udev sys-apps/hdparm sys-process/procps zram? ( sys-apps/zram-ge
 REQUIRED_USE=zram? ( systemd )
 SLOT=0
 SRC_URI=https://github.com/CachyOS/CachyOS-Settings/archive/302b7cdc948d4999044b2aaa32ed887f20f41927.tar.gz -> cachyos-settings-20240114.tar.gz
-_eclasses_=toolchain-funcs	a6df79c1e9bc84369dbf3d44206ac772	udev	f3d9a4376ebd22131726a68e1a0a058f	tmpfiles	9a9814db5a3fbd4f1e921c05297e7735
+_eclasses_=toolchain-funcs	a0b29008c671a362b505f96fa80ce9c0	udev	f3d9a4376ebd22131726a68e1a0a058f	tmpfiles	9a9814db5a3fbd4f1e921c05297e7735
 _md5_=d24389965053fefb57a5af592a568c68
