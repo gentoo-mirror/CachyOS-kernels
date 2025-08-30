@@ -3,13 +3,13 @@ DESCRIPTION=Linux BORE + LTO + AutoFDO + Propeller Cachy Sauce Kernel by CachyOS
 EAPI=8
 HOMEPAGE=https://github.com/CachyOS/linux-cachyos
 INHERIT=kernel-2 optfeature
-IUSE=experimental +bore bmq rt rt-bore eevdf deckify hardened kcfi +autofdo +propeller llvm-lto-thin llvm-lto-full +llvm-lto-thin-dist zfs hz_ticks_100 hz_ticks_250 hz_ticks_300 hz_ticks_500 hz_ticks_600 hz_ticks_750 +hz_ticks_1000 +per-gov tickrate_perodic tickrate_idle +tickrate_full +preempt_full preempt_lazy preempt_voluntary +o3 os debug +bbr3 +hugepage_always hugepage_madvise mgeneric mgeneric_v1 mgeneric_v2 mgeneric_v3 mgeneric_v4 +mnative mzen4 symlink build
+IUSE=experimental +bore bmq rt rt-bore eevdf deckify hardened kcfi +autofdo +propeller llvm-lto-thin llvm-lto-full +llvm-lto-thin-dist kernel-builtin-zfs hz_ticks_100 hz_ticks_250 hz_ticks_300 hz_ticks_500 hz_ticks_600 hz_ticks_750 +hz_ticks_1000 +per-gov tickrate_perodic tickrate_idle +tickrate_full +preempt_full preempt_lazy preempt_voluntary +o3 os debug +bbr3 +hugepage_always hugepage_madvise mgeneric mgeneric_v1 mgeneric_v2 mgeneric_v3 mgeneric_v4 +mnative mzen4 symlink build
 KEYWORDS=~amd64
 LICENSE=GPL-3
 RDEPEND=autofdo? ( dev-util/perf[libpfm] ) !build? ( app-alternatives/cpio dev-lang/perl app-alternatives/bc dev-build/make sys-devel/bison sys-devel/flex >=sys-libs/ncurses-5.2 virtual/libelf virtual/pkgconfig )
 REQUIRED_USE=^^ ( bore bmq rt rt-bore eevdf ) propeller? ( !llvm-lto-full ) autofdo? ( || ( llvm-lto-thin llvm-lto-full llvm-lto-thin-dist ) ) ?? ( llvm-lto-thin llvm-lto-full llvm-lto-thin-dist ) ^^ ( hz_ticks_100 hz_ticks_250 hz_ticks_300 hz_ticks_500 hz_ticks_600 hz_ticks_750 hz_ticks_1000 ) ^^ ( tickrate_perodic tickrate_idle tickrate_full ) rt? ( ^^ ( preempt_full preempt_lazy preempt_voluntary ) ) rt-bore? ( ^^ ( preempt_full preempt_lazy preempt_voluntary ) ) ?? ( o3 os debug ) ^^ ( hugepage_always hugepage_madvise ) ?? ( mgeneric mgeneric_v1 mgeneric_v2 mgeneric_v3 mgeneric_v4 mnative mzen4 )
 RESTRICT=binchecks strip
 SLOT=6.16.4
-SRC_URI=https://www.kernel.org/pub/linux/kernel/v6.x/patch-6.16.4.xz https://www.kernel.org/pub/linux/kernel/v6.x/linux-6.16.tar.xz zfs? ( https://github.com/cachyos/zfs/archive/3b64a9619f8f724ecac3e280a235f6b56d20ee1c.tar.gz -> zfs-3b64a9619f8f724ecac3e280a235f6b56d20ee1c.tar.gz )
+SRC_URI=https://www.kernel.org/pub/linux/kernel/v6.x/patch-6.16.4.xz https://www.kernel.org/pub/linux/kernel/v6.x/linux-6.16.tar.xz kernel-builtin-zfs? ( https://github.com/cachyos/zfs/archive/3b64a9619f8f724ecac3e280a235f6b56d20ee1c.tar.gz -> zfs-3b64a9619f8f724ecac3e280a235f6b56d20ee1c.tar.gz )
 _eclasses_=toolchain-funcs	a0b29008c671a362b505f96fa80ce9c0	crossdev	f04338ff78f213a4a55c5c37b3c6563e	estack	c61c368a76fdf3a82fdf8dbaebea3804	multiprocessing	1e32df7deee68372153dca65f4a7c21f	optfeature	538bce96e5589935b57e178e8635f301	kernel-2	0e01377cce73a7a06321d0ef97388d31
-_md5_=72d3e0be1a994459bf79b91f505106f7
+_md5_=0970805a4b9f6fc691db9c8a2d198b68
