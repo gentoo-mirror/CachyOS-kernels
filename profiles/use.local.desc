@@ -2,4 +2,45 @@
 # Please add your descriptions to your package's metadata.xml ONLY.
 # * generated automatically using pmaint *
 
+sys-kernel/cachyos-sources:autofdo - Enable Clang AutoFDO (Automatic Feedback-Directed Optimization) support for profile-guided optimization
+sys-kernel/cachyos-sources:bbr3 - Enable TCP BBR3 (Bottleneck Bandwidth and RTT) congestion control algorithm as default
+sys-kernel/cachyos-sources:bmq - Project C BMQ (BitMap Queue) scheduler, alternative CPU scheduler with different performance characteristics
+sys-kernel/cachyos-sources:bore - CachyOS Scheduler (BORE - Burst-Oriented Response Enhancer), optimized for desktop responsiveness
+sys-kernel/cachyos-sources:debug - Enable debug-friendly optimizations and disable various debug features
+sys-kernel/cachyos-sources:deckify - Enable patches for handheld devices like Steam Deck (includes WiFi, ACPI, and handheld-specific patches)
+sys-kernel/cachyos-sources:eevdf - Default Linux EEVDF (Earliest Eligible Virtual Deadline First) scheduler
+sys-kernel/cachyos-sources:hardened - Enable hardened kernel patches for enhanced security
+sys-kernel/cachyos-sources:hugepage_always - Always enable Transparent Huge Pages for better memory performance
+sys-kernel/cachyos-sources:hugepage_madvise - Enable Transparent Huge Pages only when requested via madvise
+sys-kernel/cachyos-sources:hz_ticks_100 - Set kernel timer frequency to 100 Hz (server/battery optimized)
+sys-kernel/cachyos-sources:hz_ticks_1000 - Set kernel timer frequency to 1000 Hz (desktop optimized, default)
+sys-kernel/cachyos-sources:hz_ticks_250 - Set kernel timer frequency to 250 Hz (balanced)
+sys-kernel/cachyos-sources:hz_ticks_300 - Set kernel timer frequency to 300 Hz
+sys-kernel/cachyos-sources:hz_ticks_500 - Set kernel timer frequency to 500 Hz
+sys-kernel/cachyos-sources:hz_ticks_600 - Set kernel timer frequency to 600 Hz
+sys-kernel/cachyos-sources:hz_ticks_750 - Set kernel timer frequency to 750 Hz
+sys-kernel/cachyos-sources:kcfi - Enable kCFI (Kernel Control Flow Integrity) for additional security protection
+sys-kernel/cachyos-sources:kernel-builtin-zfs - Build ZFS module directly into the kernel (not recommended, use sys-fs/zfs-kmod instead)
+sys-kernel/cachyos-sources:llvm-lto-full - Enable LLVM full LTO - single threaded, slower compilation, more memory usage, potentially highest performance
+sys-kernel/cachyos-sources:llvm-lto-thin - Enable LLVM thin LTO (Link Time Optimization) - uses multiple threads, faster compilation, less memory usage
+sys-kernel/cachyos-sources:llvm-lto-thin-dist - Enable LLVM thin LTO with distributed model rather than in-process linking
+sys-kernel/cachyos-sources:mgeneric - Use generic x86-64 optimizations (default kernel optimizations, portable across machines)
+sys-kernel/cachyos-sources:mgeneric_v1 - Use x86-64-v1 generic optimizations (baseline x86-64)
+sys-kernel/cachyos-sources:mgeneric_v2 - Use x86-64-v2 generic optimizations (requires CMPXCHG16B, LAHF-SAHF, POPCNT, SSE3, SSE4.1, SSE4.2, SSSE3)
+sys-kernel/cachyos-sources:mgeneric_v3 - Use x86-64-v3 generic optimizations (requires AVX, AVX2, BMI1, BMI2, F16C, FMA, LZCNT, MOVBE, XSAVE)
+sys-kernel/cachyos-sources:mgeneric_v4 - Use x86-64-v4 generic optimizations (requires AVX512F, AVX512BW, AVX512CD, AVX512DQ, AVX512VL)
+sys-kernel/cachyos-sources:mnative - Use compiler native CPU autodetection optimizations (recommended for local builds, not portable)
+sys-kernel/cachyos-sources:mzen4 - Use AMD Zen 4 specific optimizations (znver4) for AMD Ryzen 7000 series and newer
+sys-kernel/cachyos-sources:o3 - Enable KBUILD_CFLAGS -O3 optimization for maximum performance
+sys-kernel/cachyos-sources:os - Optimize for size (-Os) instead of performance
+sys-kernel/cachyos-sources:per-gov - Set CPU frequency performance governor as default instead of schedutil
+sys-kernel/cachyos-sources:preempt_full - Full preemption model for lowest latency (PREEMPT)
+sys-kernel/cachyos-sources:preempt_lazy - Lazy preemption model (PREEMPT_LAZY)
+sys-kernel/cachyos-sources:preempt_voluntary - Voluntary preemption model for server workloads (PREEMPT_VOLUNTARY)
+sys-kernel/cachyos-sources:propeller - Enable Clang Propeller optimization (basic block reordering) for better performance
+sys-kernel/cachyos-sources:rt - EEVDF scheduler with realtime patches for low-latency applications
+sys-kernel/cachyos-sources:rt-bore - BORE scheduler with realtime patches for low-latency applications
+sys-kernel/cachyos-sources:tickrate_full - Use full tickless mode (NO_HZ_FULL) - can provide higher performance but lower consistency depending on hardware
+sys-kernel/cachyos-sources:tickrate_idle - Use idle tickless mode (NO_HZ_IDLE)
+sys-kernel/cachyos-sources:tickrate_perodic - Use periodic ticks (traditional approach)
 virtual/linux-sources:firmware - Install linux kernel firmware
