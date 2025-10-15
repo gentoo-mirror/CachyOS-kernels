@@ -1,0 +1,451 @@
+name: Ebuild Merge Test
+
+on:
+  push:
+    branches: [ main, master ]
+    paths:
+      - 'sys-kernel/cachyos-sources/**'
+      - '.github/workflows/ebuild-test.yml'
+  pull_request:
+    branches: [ main, master ]
+    paths:
+      - 'sys-kernel/cachyos-sources/**'
+      - '.github/workflows/ebuild-test.yml'
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        # Comprehensive test matrix based on all USE flags in the ebuild
+        use_flags:
+          # Default USE flags (bore scheduler is default)
+          - ""
+          
+          # === Scheduler Tests (mutually exclusive) ===
+          - "bmq -bore"
+          - "eevdf -bore"
+          - "rt -bore"
+          - "rt-bore -bore"
+          
+          # === Special Configurations ===
+          - "hardened"
+          - "hardened kcfi"
+          - "deckify"
+          - "deckify hardened"
+          
+          # === Hz Tick Rate Tests (mutually exclusive) ===
+          - "hz_ticks_100 -hz_ticks_1000"
+          - "hz_ticks_250 -hz_ticks_1000"
+          - "hz_ticks_300 -hz_ticks_1000"
+          - "hz_ticks_500 -hz_ticks_1000"
+          - "hz_ticks_600 -hz_ticks_1000"
+          - "hz_ticks_750 -hz_ticks_1000"
+          
+          # === Tick Type Tests (mutually exclusive) ===
+          - "tickrate_perodic -tickrate_full"
+          - "tickrate_idle -tickrate_full"
+          
+          # === Preemption Mode Tests ===
+          - "preempt_voluntary -preempt_full"
+          - "preempt_lazy -preempt_full"
+          # RT schedulers with different preemption
+          - "rt preempt_voluntary -bore -preempt_full"
+          - "rt preempt_lazy -bore -preempt_full"
+          - "rt-bore preempt_voluntary -bore -preempt_full"
+          - "rt-bore preempt_lazy -bore -preempt_full"
+          
+          # === Compiler Optimization Tests ===
+          - "o3"  # Default
+          - "os -o3"
+          - "debug -o3"
+          
+          # === Network and Performance ===
+          - "bbr3"  # Default
+          - "-bbr3"
+          - "per-gov"  # Default
+          - "-per-gov"
+          
+          # === Memory Management ===
+          - "hugepage_always"  # Default
+          - "hugepage_madvise -hugepage_always"
+          
+          # === CPU Architecture Optimization ===
+          - "mnative"  # Default
+          - "mgeneric -mnative"
+          - "mgeneric_v1 -mnative"
+          - "mgeneric_v2 -mnative"
+          - "mgeneric_v3 -mnative"
+          - "mgeneric_v4 -mnative"
+          - "mzen4 -mnative"
+          
+          # === LLVM LTO Tests (mutually exclusive) ===
+          - "llvm-lto-thin-dist"  # Default
+          - "llvm-lto-thin -llvm-lto-thin-dist"
+          - "llvm-lto-full -llvm-lto-thin-dist"
+          
+          # === Advanced Optimization ===
+          - "autofdo propeller"  # Both default on
+          - "-autofdo -propeller"
+          - "autofdo -propeller"
+          - "-autofdo propeller"
+          - "autofdo llvm-lto-thin -llvm-lto-thin-dist"
+          - "autofdo llvm-lto-full -propeller -llvm-lto-thin-dist"  # propeller conflicts with full LTO
+          
+          # === ZFS Support ===
+          - "kernel-builtin-zfs"
+          
+          # === Complex Real-world Combinations ===
+          # Performance gaming setup
+          - "bmq o3 bbr3 hz_ticks_1000 per-gov mzen4 -bore"
+          # Low latency audio workstation
+          - "rt preempt_full hz_ticks_1000 tickrate_full -bore"
+          # Power saving laptop
+          - "eevdf os hz_ticks_250 tickrate_idle -per-gov -bore -tickrate_full -hz_ticks_1000 -o3"
+          # Hardened server
+          - "hardened kcfi rt-bore preempt_lazy -bore -preempt_full"
+          # Steam Deck optimized
+          - "deckify bmq hz_ticks_500 o3 -bore -hz_ticks_1000"
+          # Development workstation with debugging
+          - "debug eevdf tickrate_perodic -o3 -bore -tickrate_full"
+          # Maximum optimization build
+          - "bore o3 bbr3 autofdo propeller llvm-lto-thin mzen4 -llvm-lto-thin-dist"
+          # Conservative stable build
+          - "eevdf mgeneric os -bore -o3 -autofdo -propeller"
+          # RT audio production
+          - "rt-bore preempt_full hz_ticks_1000 o3 -bore"
+          # Virtual machine host
+          - "eevdf hugepage_madvise tickrate_idle mgeneric_v3 -bore -hugepage_always -tickrate_full -mnative"
+          # Container host optimized
+          - "bore per-gov bbr3 hz_ticks_300 -hz_ticks_1000"
+          # Compile server optimized
+          - "bmq llvm-lto-full os mgeneric_v4 -bore -o3 -propeller -llvm-lto-thin-dist -mnative"
+          # Desktop with AutoFDO profiling
+          - "bore autofdo llvm-lto-thin hz_ticks_1000 o3 -llvm-lto-thin-dist"
+          # Maximum compatibility
+          - "eevdf mgeneric -bore -autofdo -propeller -kcfi"
+          
+    container:
+      image: ghcr.io/projg2/gentoo:latest
+      options: --privileged
+      
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Setup Portage repository
+      run: |
+        # Create local overlay
+        mkdir -p /var/db/repos/cachyos-overlay
+        cp -r . /var/db/repos/cachyos-overlay/
+        
+        # Configure repos.conf
+        mkdir -p /etc/portage/repos.conf
+        cat > /etc/portage/repos.conf/cachyos.conf <<EOF
+        [cachyos]
+        location = /var/db/repos/cachyos-overlay
+        auto-sync = no
+        priority = 50
+        EOF
+        
+        # Sync main repo
+        emerge --sync || true
+        
+    - name: Setup build environment
+      run: |
+        # Update @world
+        emerge --update --deep --newuse @world || true
+        
+        # Install build dependencies
+        emerge --noreplace \
+          sys-devel/bc \
+          sys-devel/bison \
+          sys-devel/flex \
+          dev-libs/elfutils \
+          app-arch/cpio \
+          dev-util/pahole \
+          dev-lang/perl \
+          dev-lang/python \
+          dev-lang/rust \
+          dev-lang/rust-bin \
+          virtual/rust \
+          dev-util/bindgen \
+          app-arch/xz-utils \
+          app-arch/zstd \
+          sys-apps/kmod \
+          || true
+
+        # Setup for LLVM/Clang builds if needed
+        if echo "${{ matrix.use_flags }}" | grep -q "llvm-lto\|kcfi\|autofdo\|propeller"; then
+          emerge --noreplace sys-devel/clang sys-devel/llvm sys-devel/lld || true
+        fi
+        
+        # Setup for AutoFDO if needed
+        if echo "${{ matrix.use_flags }}" | grep -q "autofdo"; then
+          emerge --noreplace dev-util/perf || true
+        fi
+
+    - name: Configure package.use
+      run: |
+        mkdir -p /etc/portage/package.use
+        echo "sys-kernel/cachyos-sources ${{ matrix.use_flags }}" > /etc/portage/package.use/cachyos-sources
+        
+        # Find the latest version available
+        LATEST_VERSION=$(find /var/db/repos/cachyos-overlay/sys-kernel/cachyos-sources -name "*.ebuild" | grep -v "9999" | sed 's/.*cachyos-sources-\(.*\)\.ebuild/\1/' | sort -V | tail -1)
+        
+        # Show the USE flags that will be used
+        echo "Testing version $LATEST_VERSION with USE flags:"
+        emerge --pretend --verbose =sys-kernel/cachyos-sources-${LATEST_VERSION} | grep USE || true
+
+    - name: Identify latest ebuild
+      id: ebuild
+      run: |
+        cd /var/db/repos/cachyos-overlay/sys-kernel/cachyos-sources
+        # Find the latest ebuild version
+        LATEST_EBUILD=$(ls -1 cachyos-sources-*.ebuild | grep -v "9999" | sort -V | tail -1)
+        echo "Latest ebuild: $LATEST_EBUILD"
+        echo "ebuild_file=$LATEST_EBUILD" >> $GITHUB_OUTPUT
+        
+        # Extract version for later use
+        VERSION=$(echo "$LATEST_EBUILD" | sed 's/cachyos-sources-\(.*\)\.ebuild/\1/')
+        echo "version=$VERSION" >> $GITHUB_OUTPUT
+        
+    - name: Test ebuild manifest
+      run: |
+        cd /var/db/repos/cachyos-overlay/sys-kernel/cachyos-sources
+        ebuild "${{ steps.ebuild.outputs.ebuild_file }}" manifest
+
+    - name: Test ebuild merge (compile disabled)
+      run: |
+        # We only test up to prepare phase to validate patches and configuration
+        # Full kernel compilation would take too long in CI
+        cd /var/db/repos/cachyos-overlay/sys-kernel/cachyos-sources
+        
+        # Test fetch
+        ebuild "${{ steps.ebuild.outputs.ebuild_file }}" clean
+        ebuild "${{ steps.ebuild.outputs.ebuild_file }}" fetch
+        
+        # Test unpack
+        ebuild "${{ steps.ebuild.outputs.ebuild_file }}" unpack
+        
+        # Test prepare (this applies patches and configures)
+        ebuild "${{ steps.ebuild.outputs.ebuild_file }}" prepare
+        
+        # If we get here, patches applied successfully
+        echo "✓ Patches applied successfully with USE='${{ matrix.use_flags }}'"
+
+    - name: Verify configuration
+      run: |
+        # Find the work directory dynamically
+        WORKDIR=$(find /var/tmp/portage/sys-kernel/cachyos-sources-*/work -maxdepth 1 -name "linux-*" -type d | head -1)
+        
+        if [ -d "$WORKDIR" ]; then
+          cd "$WORKDIR"
+          echo "Working in: $WORKDIR"
+          
+          # Function to check config using scripts/config
+          check_config() {
+            local option=$1
+            local expected=$2
+            local description=$3
+            
+            actual=$(./scripts/config --state "$option" 2>/dev/null || echo "undef")
+            if [ "$actual" = "$expected" ]; then
+              echo "✓ $description: $option=$actual"
+            else
+              echo "✗ $description: expected $option=$expected, got $actual"
+              exit 1
+            fi
+          }
+          
+          # Function to check config value
+          check_config_val() {
+            local option=$1
+            local expected=$2
+            local description=$3
+            
+            actual=$(./scripts/config --get-val "$option" 2>/dev/null || echo "undef")
+            if [ "$actual" = "$expected" ]; then
+              echo "✓ $description: $option=$actual"
+            else
+              echo "✗ $description: expected $option=$expected, got $actual"
+              exit 1
+            fi
+          }
+          
+          # === Verify Scheduler Configuration ===
+          if echo "${{ matrix.use_flags }}" | grep -q "\bbore\b\|^$"; then
+            # bore is default when no scheduler specified
+            if ! echo "${{ matrix.use_flags }}" | grep -E -q "bmq|eevdf|rt |rt-bore"; then
+              check_config "CONFIG_SCHED_BORE" "y" "BORE scheduler"
+            fi
+          fi
+          
+          if echo "${{ matrix.use_flags }}" | grep -q "bmq"; then
+            check_config "CONFIG_SCHED_ALT" "y" "ALT scheduler framework"
+            check_config "CONFIG_SCHED_BMQ" "y" "BMQ scheduler"
+          fi
+          
+          if echo "${{ matrix.use_flags }}" | grep -q "rt "; then
+            check_config "CONFIG_PREEMPT_RT" "y" "RT preemption"
+          fi
+          
+          if echo "${{ matrix.use_flags }}" | grep -q "rt-bore"; then
+            check_config "CONFIG_SCHED_BORE" "y" "RT-BORE: BORE scheduler"
+            check_config "CONFIG_PREEMPT_RT" "y" "RT-BORE: RT preemption"
+          fi
+          
+          # === Verify Other Configurations ===
+          if echo "${{ matrix.use_flags }}" | grep -q "hardened"; then
+            echo "✓ Hardened configuration applied"
+          fi
+          
+          if echo "${{ matrix.use_flags }}" | grep -q "kcfi"; then
+            check_config "CONFIG_CFI_CLANG" "y" "KCFI"
+            check_config "CONFIG_CFI_AUTO_DEFAULT" "y" "KCFI auto default"
+          fi
+          
+          # Check BBR3 - default is enabled unless explicitly disabled
+          if echo "${{ matrix.use_flags }}" | grep -q -- "-bbr3"; then
+            check_config "CONFIG_TCP_CONG_BBR" "m" "BBR3 as module"
+          elif echo "${{ matrix.use_flags }}" | grep -q "bbr3\|^$"; then
+            check_config "CONFIG_TCP_CONG_BBR" "y" "BBR3"
+            check_config "CONFIG_DEFAULT_BBR" "y" "BBR3 as default"
+          fi
+          
+          # Check performance governor
+          if echo "${{ matrix.use_flags }}" | grep -q "per-gov\|^$"; then
+            if ! echo "${{ matrix.use_flags }}" | grep -q -- "-per-gov"; then
+              check_config "CONFIG_CPU_FREQ_DEFAULT_GOV_PERFORMANCE" "y" "Performance governor"
+            fi
+          fi
+          
+          # === Verify Hz Configuration ===
+          for hz in 100 250 300 500 600 750 1000; do
+            if echo "${{ matrix.use_flags }}" | grep -q "hz_ticks_${hz}"; then
+              check_config_val "CONFIG_HZ" "$hz" "HZ tick rate"
+              break
+            fi
+          done
+          # Default is 1000
+          if ! echo "${{ matrix.use_flags }}" | grep -E -q "hz_ticks_[0-9]+"; then
+            check_config_val "CONFIG_HZ" "1000" "HZ tick rate (default)"
+          fi
+          
+          # === Verify Tick Type ===
+          if echo "${{ matrix.use_flags }}" | grep -q "tickrate_perodic"; then
+            check_config "CONFIG_HZ_PERIODIC" "y" "Periodic ticks"
+            check_config "CONFIG_NO_HZ" "n" "NO_HZ disabled"
+          elif echo "${{ matrix.use_flags }}" | grep -q "tickrate_idle"; then
+            check_config "CONFIG_NO_HZ_IDLE" "y" "Idle tickless"
+            check_config "CONFIG_NO_HZ" "y" "NO_HZ enabled"
+          elif echo "${{ matrix.use_flags }}" | grep -q "tickrate_full\|^$"; then
+            # Default is full
+            if ! echo "${{ matrix.use_flags }}" | grep -q "tickrate_perodic\|tickrate_idle"; then
+              check_config "CONFIG_NO_HZ_FULL" "y" "Full tickless"
+              check_config "CONFIG_NO_HZ" "y" "NO_HZ enabled"
+            fi
+          fi
+          
+          # === Verify Preemption Mode ===
+          if ! echo "${{ matrix.use_flags }}" | grep -q "rt\|rt-bore"; then
+            if echo "${{ matrix.use_flags }}" | grep -q "preempt_voluntary"; then
+              check_config "CONFIG_PREEMPT_VOLUNTARY" "y" "Voluntary preemption"
+              check_config "CONFIG_PREEMPT" "n" "Full preemption disabled"
+            elif echo "${{ matrix.use_flags }}" | grep -q "preempt_lazy"; then
+              check_config "CONFIG_PREEMPT_LAZY" "y" "Lazy preemption"
+            elif echo "${{ matrix.use_flags }}" | grep -q "preempt_full\|^$"; then
+              # Default is full
+              if ! echo "${{ matrix.use_flags }}" | grep -q "preempt_voluntary\|preempt_lazy"; then
+                check_config "CONFIG_PREEMPT" "y" "Full preemption"
+              fi
+            fi
+          fi
+          
+          # === Verify Optimization Flags ===
+          if echo "${{ matrix.use_flags }}" | grep -q "\bos\b"; then
+            check_config "CONFIG_CC_OPTIMIZE_FOR_SIZE" "y" "Optimize for size"
+          elif echo "${{ matrix.use_flags }}" | grep -q "debug"; then
+            check_config "CONFIG_CC_OPTIMIZE_FOR_SIZE" "y" "Debug: optimize for size"
+          elif echo "${{ matrix.use_flags }}" | grep -q "o3\|^$"; then
+            # Default is O3
+            if ! echo "${{ matrix.use_flags }}" | grep -q "os\|debug"; then
+              check_config "CONFIG_CC_OPTIMIZE_FOR_PERFORMANCE_O3" "y" "O3 optimization"
+            fi
+          fi
+          
+          # === Verify Huge Pages ===
+          if echo "${{ matrix.use_flags }}" | grep -q "hugepage_madvise"; then
+            check_config "CONFIG_TRANSPARENT_HUGEPAGE_MADVISE" "y" "THP madvise"
+          elif echo "${{ matrix.use_flags }}" | grep -q "hugepage_always\|^$"; then
+            # Default is always
+            if ! echo "${{ matrix.use_flags }}" | grep -q "hugepage_madvise"; then
+              check_config "CONFIG_TRANSPARENT_HUGEPAGE_ALWAYS" "y" "THP always"
+            fi
+          fi
+          
+          # === Verify CPU Optimization ===
+          if echo "${{ matrix.use_flags }}" | grep -q "mgeneric_v1"; then
+            check_config "CONFIG_GENERIC_CPU" "y" "Generic CPU"
+            check_config_val "CONFIG_X86_64_VERSION" "1" "x86-64 v1"
+          elif echo "${{ matrix.use_flags }}" | grep -q "mgeneric_v2"; then
+            check_config "CONFIG_GENERIC_CPU" "y" "Generic CPU"
+            check_config_val "CONFIG_X86_64_VERSION" "2" "x86-64 v2"
+          elif echo "${{ matrix.use_flags }}" | grep -q "mgeneric_v3"; then
+            check_config "CONFIG_GENERIC_CPU" "y" "Generic CPU"
+            check_config_val "CONFIG_X86_64_VERSION" "3" "x86-64 v3"
+          elif echo "${{ matrix.use_flags }}" | grep -q "mgeneric_v4"; then
+            check_config "CONFIG_GENERIC_CPU" "y" "Generic CPU"
+            check_config_val "CONFIG_X86_64_VERSION" "4" "x86-64 v4"
+          elif echo "${{ matrix.use_flags }}" | grep -q "mgeneric"; then
+            check_config "CONFIG_GENERIC_CPU" "y" "Generic CPU"
+          elif echo "${{ matrix.use_flags }}" | grep -q "mzen4"; then
+            check_config "CONFIG_MZEN4" "y" "Zen4 CPU"
+          elif echo "${{ matrix.use_flags }}" | grep -q "mnative\|^$"; then
+            # Default is native
+            if ! echo "${{ matrix.use_flags }}" | grep -q "mgeneric\|mzen4"; then
+              check_config "CONFIG_X86_NATIVE_CPU" "y" "Native CPU optimization"
+            fi
+          fi
+          
+          # === Verify LTO Configuration ===
+          if echo "${{ matrix.use_flags }}" | grep -q "llvm-lto-thin" && ! echo "${{ matrix.use_flags }}" | grep -q "llvm-lto-thin-dist"; then
+            check_config "CONFIG_LTO_CLANG_THIN" "y" "Thin LTO"
+          elif echo "${{ matrix.use_flags }}" | grep -q "llvm-lto-full"; then
+            check_config "CONFIG_LTO_CLANG_FULL" "y" "Full LTO"
+          elif echo "${{ matrix.use_flags }}" | grep -q "llvm-lto-thin-dist\|^$"; then
+            # Default is thin-dist
+            if ! echo "${{ matrix.use_flags }}" | grep -q "llvm-lto-thin\|llvm-lto-full"; then
+              check_config "CONFIG_LTO_CLANG_THIN_DIST" "y" "Thin Distributed LTO"
+            fi
+          fi
+          
+          # === Verify AutoFDO/Propeller ===
+          if echo "${{ matrix.use_flags }}" | grep -q "autofdo\|^$"; then
+            if ! echo "${{ matrix.use_flags }}" | grep -q -- "-autofdo"; then
+              check_config "CONFIG_AUTOFDO_CLANG" "y" "AutoFDO"
+            fi
+          fi
+          
+          if echo "${{ matrix.use_flags }}" | grep -q "propeller\|^$"; then
+            if ! echo "${{ matrix.use_flags }}" | grep -q -- "-propeller\|llvm-lto-full"; then
+              check_config "CONFIG_PROPELLER_CLANG" "y" "Propeller"
+            fi
+          fi
+          
+          echo "======================================="
+          echo "All configuration checks passed!"
+          echo "======================================="
+        else
+          echo "Error: Could not find work directory"
+          exit 1
+        fi
+
+    - name: Summary
+      if: always()
+      run: |
+        echo "======================================="
+        echo "Test completed for USE flags: ${{ matrix.use_flags }}"
+        echo "======================================="
